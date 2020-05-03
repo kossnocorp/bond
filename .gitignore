@@ -1,3 +1,4 @@
 node_modules
 lib
 docs
+test/system/client.js
