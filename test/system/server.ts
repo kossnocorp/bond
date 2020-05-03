@@ -31,7 +31,7 @@ serve(app, api.books)(async () => books)
 serve(
   app,
   api.book
-)(async ({ params: { bookId } }) => {
+)(async ({ bookId }) => {
   const book = books.find(({ title }) => titleToId(title) === bookId)
   if (!book) return null
   const author = authors.find(({ name }) => book.authorName === name)

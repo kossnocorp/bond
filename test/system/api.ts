@@ -11,11 +11,11 @@ export type Book = {
 }
 
 const api = {
-  books: endpoint<Book[]>('GET', '/books'),
+  books: endpoint<Book[]>()('GET', () => '/books'),
 
-  book: endpoint<
-    { book: Book; author?: Author } | null,
-    { params: { bookId: string } }
-  >('GET', '/books/:bookId'),
+  book: endpoint<{ book: Book; author?: Author } | null>()(
+    'GET',
+    ({ bookId }: { bookId: string }) => `/books/${bookId}`
+  ),
 }
 export default api
