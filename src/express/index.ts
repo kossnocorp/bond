@@ -2,8 +2,8 @@ import { Endpoint } from '../endpoint'
 import { CookiesAccessor } from '../cookies'
 
 export function server<Cookies>(app: import('express').Express) {
-  function serve<Response, Params>(
-    endpoint: Endpoint<Response, Params>,
+  function serve<Response, Query, Body, Params>(
+    endpoint: Endpoint<Response, Query, Body, Params>,
     handler: (props: {
       params: Params
       cookies: CookiesAccessor<Cookies>

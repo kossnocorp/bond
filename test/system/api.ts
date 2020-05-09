@@ -1,12 +1,20 @@
 import { endpoint } from '../../src/endpoint'
 
 const api = {
-  book: endpoint<{ book: Book; author?: Author } | null>()(
+  book: endpoint<{ response: { book: Book; author?: Author } | null }>()(
     'GET',
     ({ bookId }: { bookId: string }) => `/books/${bookId}`
   ),
 
-  books: endpoint<Book[]>()('GET', () => `/books`),
+  books: endpoint<{
+    response: Book[]
+    query: { filter?: 'unread' | 'read' }
+  }>()('GET', () => `/books`),
+
+  createBook: endpoint<{ response: Book; body: Book }>()(
+    'POST',
+    () => `/books`
+  ),
 }
 export default api
 

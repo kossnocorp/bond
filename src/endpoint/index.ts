@@ -1,21 +1,33 @@
 export type Method = 'GET' | 'POST'
 
-export type Endpoint<_Response, Params> = {
+export type Endpoint<_Response, _Query, _Body, Params> = {
   method: Method
   path: (params: Params) => string
 }
 
+export type EndpointQuery = { [key: string]: string | undefined }
+
+export type EndpointShape<
+  Response,
+  Query extends EndpointQuery | undefined,
+  Body
+> = {
+  response?: Response
+  query?: Query
+  body?: Body
+}
+
 // Allow to define:
-// - Query
-// - Body
 // - Headers?
 
-export function endpoint<Response>(): <Params = undefined>(
+export function endpoint<Shape extends EndpointShape<any, any, any>>(): <
+  Params = undefined
+>(
   method: Method,
   path: (params: Params) => string
 ) => Params extends {}
-  ? Endpoint<Response, Params>
-  : Endpoint<Response, undefined> {
+  ? Endpoint<Shape['response'], Shape['query'], Shape['body'], Params>
+  : Endpoint<Shape['response'], Shape['query'], Shape['body'], undefined> {
   // @ts-ignore
   return (method, path) => ({ method, path })
 }
