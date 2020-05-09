@@ -1,10 +1,12 @@
-import api, { Author, Book } from './api'
-import { serve } from '../../src/express'
+import api, { Author, Book, Cookies } from './api'
+import { server } from '../../src/express'
 import express from 'express'
+import cookieParser from 'cookie-parser'
 
 const app = express()
 const port = 3000
 
+app.use(cookieParser())
 app.use(express.static(__dirname))
 
 const authors: Author[] = [
@@ -26,17 +28,21 @@ const books: Book[] = [
   },
 ]
 
-serve(app, api.books)(async () => books)
+const { serve } = server<Cookies>(app)
 
-serve(
-  app,
-  api.book
-)(async ({ bookId }) => {
+serve(api.books, async () => books)
+
+serve(api.book, async ({ params: { bookId }, cookies }) => {
+  if (!authorized(cookies.get('sessionId'))) throw new Error('Unauthorized!')
   const book = books.find(({ title }) => titleToId(title) === bookId)
   if (!book) return null
   const author = authors.find(({ name }) => book.authorName === name)
   return { book, author }
 })
+
+function authorized(sessionId: string) {
+  return sessionId === 'good'
+}
 
 app.listen(port, () =>
   console.log(`Example app listening at http://localhost:${port}`)

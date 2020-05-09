@@ -5,6 +5,11 @@ export type Endpoint<_Response, Params> = {
   path: (params: Params) => string
 }
 
+// Allow to define:
+// - Query
+// - Body
+// - Headers?
+
 export function endpoint<Response>(): <Params = undefined>(
   method: Method,
   path: (params: Params) => string

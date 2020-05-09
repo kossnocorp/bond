@@ -23,6 +23,7 @@
     "@types/webpack-env": "^1.14.0",
     "babel-loader": "^8.0.6",
     "babel-preset-power-assert": "^3.0.0",
+    "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
     "jest": "^25.5.2",
     "karma": "^4.2.0",
