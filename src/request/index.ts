@@ -26,17 +26,18 @@ export function request<Response, Query, Body, Params>(
   endpoint: Endpoint<Response, Query, Body, Params>
 ): EndpointRequest<Response, Query, Body, Params> {
   return (async (payload: EndpointPayload<Query, Body, Params> | undefined) => {
-    const query = payload?.params || ({} as Params)
-    const body = payload?.params || ({} as Params)
+    const query = payload?.query || ({} as Query)
+    const body = payload?.body || ({} as Body)
     const params = payload?.params || ({} as Params)
 
+    // TODO: Add query
     const response = await fetch(endpoint.path(params), {
       method: endpoint.method,
       headers: {
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
-      body: JSON.stringify(payload?.body),
+      body: JSON.stringify(body),
     })
     const json = await response.json()
     return json as Response
