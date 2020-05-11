@@ -6,6 +6,8 @@ export function server<Cookies>(app: import('express').Express) {
     endpoint: Endpoint<Response, Query, Body, Params>,
     handler: (props: {
       params: Params
+      query: Query
+      body: Body
       cookies: CookiesAccessor<Cookies>
     }) => Promise<Response>
   ) {
@@ -14,6 +16,8 @@ export function server<Cookies>(app: import('express').Express) {
       async (request, response) => {
         const result = await handler({
           params: (request.params as unknown) as Params,
+          query: (request.query as unknown) as Query,
+          body: request.body,
           cookies: {
             get: (key) => request.cookies[key] || null,
             set: (key, value) => response.cookie(key as string, value),

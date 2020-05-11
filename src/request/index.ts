@@ -16,7 +16,7 @@ type EndpointPayload<Query, Body, Params> = (Query extends undefined
     ? { params?: Params | undefined }
     : { params: Params })
 
-type EndpointRequest<Response, Query, Body, Params> = Partial<
+export type EndpointRequest<Response, Query, Body, Params> = Partial<
   EndpointPayload<Query, Body, Params>
 > extends EndpointPayload<Query, Body, Params>
   ? (payload?: EndpointPayload<Query, Body, Params>) => Promise<Params>

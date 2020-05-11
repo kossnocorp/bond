@@ -30,14 +30,23 @@ const books: Book[] = [
 
 const { serve } = server<Cookies>(app)
 
-serve(api.books, async () => books)
+serve(api.books, async ({ query }) => {
+  if (query.filter) return books.filter(() => true)
+  return books
+})
 
 serve(api.book, async ({ params: { bookId }, cookies }) => {
   if (!authorized(cookies.get('sessionId'))) throw new Error('Unauthorized!')
+  cookies.set('acceptedCookies', true)
   const book = books.find(({ title }) => titleToId(title) === bookId)
   if (!book) return null
   const author = authors.find(({ name }) => book.authorName === name)
   return { book, author }
+})
+
+serve(api.createBook, async ({ body }) => {
+  books.push(body)
+  return body
 })
 
 function authorized(sessionId: string) {
