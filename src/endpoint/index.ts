@@ -1,4 +1,4 @@
-export type Method = 'GET' | 'POST'
+export type Method = 'GET' | 'POST' | 'HEAD' | 'PUT' | 'DELETE' | 'PATCH'
 
 export type Endpoint<_Response, _Query, _Body, Params> = {
   method: Method
